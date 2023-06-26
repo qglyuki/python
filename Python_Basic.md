@@ -279,10 +279,112 @@ def	函数名(arg1, arg2, ...):
 + 类内部可以调用私有函数与变量
 + 无法被实例化的对象调用的类中的函数与变量
 
-### (三) 装饰器
+### (三) 装饰器和类的装饰器
 还需要去复习
 b站视频讲解链接
 https://www.bilibili.com/video/BV1SZ4y1s7cv/?spm_id_from=333.337.search-card.all.click&vd_source=ff056e055bec004de28e90a76e649263
 CSDN博客链接
 https://blog.csdn.net/ncepu_Chen/article/details/106075394
+
+
+
+**********************************************************************
+
+## 六、异常和异常处理
+### (一) 内置异常函数
+
+| **异常名称**      | **说明**             |
+| ----------------- | -------------------- |
+| Exception         | 通用异常类型（基类） |
+| ZeroDivisionError | 不能整除0            |
+| AttributeError    | 对象没有这个属性     |
+| IOError           | 输入输出操作失败     |
+| IndexError        | 没有当前的索引       |
+| KeyError          | 没有这个键值         |
+| NameError         | 没有这个键值（key）  |
+| SyntaxError       | Python语法错误       |
+| SystemError       | 解释器的系统错误     |
+| ValueError        | 传入的参数错误       |
+
+```python
+1. 
+try:
+    <代码块1>	被try关键字检查并保护的业务代码
+    
+except <异常的类型>:
+    <代码块2>	# 代码块1出现错误后执行的代码块
+    
+2. 
+捕获多个异常
+try:
+print('try start')
+res = 1/0
+print('try finish')
+except ZeroDivisionError as e:
+print(e)
+except Exception as e:	# 可以有多个except
+print(this is a public except, bug is: %s' % e)
+
+3. 
+捕获多个异常
+try:
+      print('try start')
+      res = 1/0
+      print('try finish')
+except(ZeroDivisionError, Exception) as e:
+      print(e)
+      
+当 except代码后边的异常类型使用元组包裹起来，捕获到哪种抛哪种
+      
+4. 
+try:
+    <代码块1>
+except:
+    <代码块2>
+finally:
+    <代码块3>	# 无论是否发生异常， 一定会执行的代码块,在函数中，即便在try 或except中进行了return也依然会执行finally语法块, try语法至少要伴随except或finally中的一个
+```
+### (二) 自定义异常和抛出异常
+
+● 自定义抛出异常 raise, 将信息以报错的形式抛出
+用法：**raise 异常类型(message)**
+参数：
+    message: 错误信息
+    返回值：无返回值
+● 自定义异常类
+继承基类 - Exception, 在构造函数中定义错误信息
+
+```python
+class NumberLimitError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+class NameLimitError(Exception):
+    def __init__(self, message):
+        self.message = message
+
+def test5(name):
+    if name == 'dewei':
+        raise NameLimitError('dewei不可以被填写')
+    return name
+
+def test6(number):
+    if number > 100:
+        raise NumberLimitError('数字不可以大于100')
+    return number
+
+print('-------')
+
+try:
+    test5('dewei')
+except NameLimitError as e:
+    print(e)
+
+try:
+    test6(101)
+except NumberLimitError as e:
+    print(e)
+
+test5('dewei')
+```
 
